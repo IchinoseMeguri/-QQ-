@@ -1,4 +1,3 @@
-import java.io.IOException;
 
 /*
  * @Author: Meguri Ichinose
@@ -6,8 +5,12 @@ import java.io.IOException;
  * @Description: 
  */
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         // new gui.Login().setVisible(true);
-        gui.Register.testf();
+        gui.Chat chat = new gui.Chat("1");
+        chat.setVisible(true);
+
+        // new gui.Register().setVisible(true);
+        // new gui.FindPasswd("n").setVisible(true);
     }
 }

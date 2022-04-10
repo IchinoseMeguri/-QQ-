@@ -9,11 +9,14 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Login extends JFrame {
     private JTextField name;
@@ -62,15 +65,14 @@ public class Login extends JFrame {
 
         register = new JButton("注册账号");
         find = new JButton("找回密码");
-        find.setEnabled(false);
         _name.add(register);
         _passwd.add(find);
 
         login = new JButton("登录");
         up.add(login);
 
-        ip = new JTextField("127.0.0.1", 15);
-        port = new JTextField("50000", 15);
+        ip = new JTextField("127.0.0.1", 10);
+        port = new JTextField("50000", 10);
 
         down = new JPanel();
         add(up, BorderLayout.NORTH);
@@ -79,6 +81,32 @@ public class Login extends JFrame {
         down.add(ip);
         down.add(new JLabel("端口号"));
         down.add(port);
+
+        login.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // TODO 与服务器通信，进行用户验证，若通过，则登录，打开聊天窗口
+                if (true) {
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "账号或密码错误");
+                }
+            }
+        });
+        register.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                new Register().setVisible(true);
+            }
+        });
+        find.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // TODO 连接服务器，查找此用户，若查找到，打开一个findpsw窗口
+                if (true) {
+                    new FindPasswd(name.getText());
+                } else {
+                    JOptionPane.showMessageDialog(null, "未查找到此用户");
+                }
+            }
+        });
 
         // 窗口自适应
         pack();

@@ -1,3 +1,8 @@
+/*
+ * @Author: Meguri Ichinose
+ * @Date: 2022-04-10 14:05:15
+ * @Description: 文件消息类
+ */
 package com;
 
 import java.io.File;

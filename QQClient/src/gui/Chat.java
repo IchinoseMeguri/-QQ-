@@ -184,7 +184,7 @@ public class Chat extends JFrame {
     }
 
     private void RefreshUsers() {
-        sendto = new JComboBox<String>();
+        sendto.removeAllItems();
         sendto.addItem("所有人");
         this.users.setText("");
         for (String string : nowusers) {

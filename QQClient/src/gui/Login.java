@@ -84,6 +84,7 @@ public class Login extends JFrame {
 
         login.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                String n = name.getText();
                 // TODO 与服务器通信，进行用户验证，若通过，则登录，打开聊天窗口
                 if (true) {
 

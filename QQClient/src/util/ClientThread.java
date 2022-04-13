@@ -28,7 +28,7 @@ public class ClientThread extends Thread {
         message.setType(type);
         message.setTime(LocalDateTime.now());
         message.setMessage(obj);
-        message.setReceiverip(null);
+        message.setReceiverip(null);// TODO
         message.setReceiverport(0);
     }
 

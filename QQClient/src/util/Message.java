@@ -12,14 +12,18 @@ public class Message {
     private int type;
     /**
      * 消息类型
-     * 1：用户登录
-     * 2：用户退出
-     * 3：发送消息
-     * 4：发送文件
-     * 5：数据库请求
+     * 11：用户登录
+     * 12：用户退出
+     * 21：发送消息
+     * 22：发送文件
+     * 31：登录认证（数据库请求）
+     * 32：注册时重名查询（数据库请求）
+     * 33：注册时添加账户（数据库请求）
+     * 34：找回密码时查找账户（数据库请求）
+     * 35：找回密码时验证密保问题（数据库请求）
      */
     private String sender;// 发送方：自己
-    private Object message;// 消息：com.Message或com.FileMessage
+    private Object message;// 消息：可以是com.Message、com.FileMessage、数据库请求字符串、简单填充等
     private LocalDateTime time;// 时间
     private String receiverip;// 接收方ip
     private int receiverport;// 接收方端口号

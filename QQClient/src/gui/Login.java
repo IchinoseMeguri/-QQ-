@@ -86,11 +86,6 @@ public class Login extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String n = name.getText();
                 // TODO 与服务器通信，进行用户验证，若通过，则登录，打开聊天窗口
-                if (true) {
-
-                } else {
-                    JOptionPane.showMessageDialog(null, "账号或密码错误");
-                }
             }
         });
         register.addActionListener(new ActionListener() {
@@ -101,11 +96,7 @@ public class Login extends JFrame {
         find.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // TODO 连接服务器，查找此用户，若查找到，打开一个findpsw窗口
-                if (true) {
-                    new FindPasswd(name.getText());
-                } else {
-                    JOptionPane.showMessageDialog(null, "未查找到此用户");
-                }
+
             }
         });
 
@@ -116,4 +107,22 @@ public class Login extends JFrame {
         // 窗口居中
         setLocationRelativeTo(null);
     }
+
+    public void LoginJudge(boolean b) {
+        if (b == true) {
+            new Chat(this.name.getText()).setVisible(true);
+            setVisible(false);
+        } else {
+            JOptionPane.showMessageDialog(null, "账号或密码错误");
+        }
+    }
+
+    public void FindJudge(boolean b) {
+        if (b == true) {
+            new FindPasswd(name.getText());
+        } else {
+            JOptionPane.showMessageDialog(null, "未查找到此用户");
+        }
+    }
+
 }

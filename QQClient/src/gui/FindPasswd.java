@@ -52,12 +52,7 @@ public class FindPasswd extends JFrame {
         ok.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // 向服务器通信，进行验证
-                if (true) {
-                    // TODO get密码
-                    JOptionPane.showMessageDialog(null, "请牢记找回的密码：");
-                } else {
-                    JOptionPane.showMessageDialog(null, "验证信息错误");
-                }
+
             }
         });
 
@@ -67,5 +62,19 @@ public class FindPasswd extends JFrame {
         setResizable(false);
         // 窗口居中
         setLocationRelativeTo(null);
+    }
+
+    /**
+     * @description: 客户端向服务器发出验证请求后，服务器向客户端返回一个结果，线程解析这条消息后调用此方法。
+     * @param b
+     * @param passwd
+     * @return
+     */
+    public void Judge(boolean b, String passwd) {
+        if (b == true) {
+            JOptionPane.showMessageDialog(null, "请牢记找回的密码：" + passwd);
+        } else {
+            JOptionPane.showMessageDialog(null, "验证信息错误");
+        }
     }
 }

@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 public class Login extends JFrame {
@@ -108,15 +109,25 @@ public class Login extends JFrame {
         setLocationRelativeTo(null);
     }
 
-    public void LoginJudge(boolean b) {
+    /**
+     * @description: 客户端向服务器发出验证请求后，服务器向客户端返回一个结果，线程解析这条消息后调用此方法。
+     * @param b
+     * @return
+     */
+    public void LoginJudge(boolean b, ArrayList<String> online) {
         if (b == true) {
-            new Chat(this.name.getText()).setVisible(true);
+            new Chat(this.name.getText(), online).setVisible(true);
             setVisible(false);
         } else {
             JOptionPane.showMessageDialog(null, "账号或密码错误");
         }
     }
 
+    /**
+     * @description: 客户端向服务器发出验证请求后，服务器向客户端返回一个结果，线程解析这条消息后调用此方法。
+     * @param b
+     * @return
+     */
     public void FindJudge(boolean b) {
         if (b == true) {
             new FindPasswd(name.getText());

@@ -67,17 +67,7 @@ public class Register extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // 向服务器通信，对数据库进行操作
                 // 重名判断
-                if (true) {
-                    JOptionPane.showMessageDialog(null, "该账号不可用");
-                } else {
-                    // 判断密码与确认密码是否一致
-                    if (psw.toString() != psw2.toString()) {
-                        JOptionPane.showMessageDialog(null, "密码与确认密码不一致");
-                    } else {
-                        // 写入数据库
-                        JOptionPane.showMessageDialog(null, "注册成功");
-                    }
-                }
+
             }
         });
 
@@ -87,5 +77,37 @@ public class Register extends JFrame {
         setResizable(false);
         // 窗口居中
         setLocationRelativeTo(null);
+    }
+
+    /**
+     * @description: 客户端向服务器发出验证请求后，服务器向客户端返回一个结果，线程解析这条消息后调用此方法。
+     * @param b
+     * @return
+     */
+    public void NameJudge(boolean b) {
+        if (b == true) {
+            JOptionPane.showMessageDialog(null, "该账号不可用");
+        } else {
+            // 判断密码与确认密码是否一致
+            if (psw.toString() != psw2.toString()) {
+                JOptionPane.showMessageDialog(null, "密码与确认密码不一致");
+            } else {
+                // 写入数据库，向服务器通信
+
+            }
+        }
+    }
+
+    /**
+     * @description: 客户端向服务器发出验证请求后，服务器向客户端返回一个结果，线程解析这条消息后调用此方法。
+     * @param b
+     * @return
+     */
+    public void RegisterOK(boolean b) {
+        if (b == true) {
+            JOptionPane.showMessageDialog(null, "注册成功");
+        } else {
+            JOptionPane.showMessageDialog(null, "注册失败");
+        }
     }
 }

@@ -47,7 +47,7 @@ public class Chat extends JFrame {
     private String name;
     private ArrayList<String> nowusers = new ArrayList<String>();
 
-    public Chat(String name) {
+    public Chat(String name, ArrayList<String> online) {
         this.name = name;
         setTitle("聊天：" + this.name);
 
@@ -100,7 +100,7 @@ public class Chat extends JFrame {
             }
         });
 
-        // TODO 服务器向客户端发送在线用户列表
+        this.nowusers = online;
         RefreshUsers();
 
         // 窗口自适应

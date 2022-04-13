@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -22,6 +23,12 @@ import com.FileMessage;
 import com.Message;
 
 import java.awt.event.WindowEvent;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -112,7 +119,21 @@ public class Chat extends JFrame {
 
     }
 
-    private void SendFile() {// TODO
+    private void SendFile() {
+        JFileChooser select = new JFileChooser(".");
+        select.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        select.setMultiSelectionEnabled(false);
+        if (select.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            File file = new File(select.getSelectedFile().getPath());
+            FileMessage message = new FileMessage();
+            message.setFile(file);
+            message.setReceiver(this.sendto.getSelectedItem().toString());
+            message.setSender(this.name);
+            message.setTime(LocalDateTime.now());
+            message.setType(this.sendto.getSelectedItem().toString() == "所有人" ? 0 : 1);
+            // TODO 向服务器发送消息
+            this.speak.setText("");
+        }
     }
 
     @Override
@@ -140,7 +161,36 @@ public class Chat extends JFrame {
     }
 
     public void ReceiveFile(FileMessage file) {
-        // TODO 预计要做个弹窗
+        String str = file.getType() == 0 ? "[广播]" : "[私聊]";
+        str += "[" + file.getTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "]";
+        str += file.getSender() + "发送了一份文件。" + "\n";
+        this.message.append(str);
+        this.message.setCaretPosition(this.message.getDocument().getLength());
+        JFileChooser save = new JFileChooser(".");
+        save.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        save.setMultiSelectionEnabled(false);
+        if (save.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            String path = save.getSelectedFile().getPath();
+            try {
+                BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file.getFile()));
+                if (!path.endsWith("\\")) {
+                    path += "\\";
+                }
+                BufferedOutputStream bos = new BufferedOutputStream(
+                        new FileOutputStream(path + file.getFile().getName()));
+                byte[] buf = new byte[4096];
+                int length = bis.read(buf);
+                // 保存文件
+                while (length != -1) {
+                    bos.write(buf, 0, length);
+                    length = bis.read(buf);
+                }
+                bos.close();
+                bis.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**

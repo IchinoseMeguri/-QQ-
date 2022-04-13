@@ -1,3 +1,6 @@
+import java.io.File;
+
+import javax.swing.JFileChooser;
 
 /*
  * @Author: Meguri Ichinose
@@ -7,13 +10,18 @@
 public class Main {
     public static void main(String[] args) throws InterruptedException {
         // new gui.Login().setVisible(true);
-        gui.Chat chat = new gui.Chat("1");
-        chat.setVisible(true);
-        chat.NewLogin("user");
-        Thread.sleep(5000);
-        chat.NewLogout("user");
 
         // new gui.Register().setVisible(true);
         // new gui.FindPasswd("n").setVisible(true);
+        JFileChooser save = new JFileChooser(".");
+        save.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        save.setMultiSelectionEnabled(false);
+        if (save.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            String path = save.getSelectedFile().getPath();
+            System.out.println(path);
+            File f = new File(path + "\\" + new File(".\\test").getName());
+            System.out.println(f);
+        }
     }
+
 }

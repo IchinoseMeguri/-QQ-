@@ -20,7 +20,7 @@ public class ClientThread extends Thread {
     private String username;
     private JFrame frame;
 
-    public ClientThread(JFrame frame) {
+    public ClientThread(JFrame frame, String ip, int port) {
 
     }
 
@@ -82,8 +82,8 @@ public class ClientThread extends Thread {
         message.setType(type);
         message.setTime(LocalDateTime.now());
         message.setMessage(obj);
-        // message.setReceiverip(null);// TODO
-        // message.setReceiverport(0);
+        message.setReceiverip(socket.getInetAddress().getHostAddress());// TODO
+        message.setReceiverport(socket.getPort());
     }
 
     public void CloseClient() {

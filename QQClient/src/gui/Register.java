@@ -38,7 +38,6 @@ public class Register extends JFrame {
 
     public Register() {
         setTitle("注册");
-        clientthread = new ClientThread(this);
 
         left = new JPanel();
         left.setLayout(new GridLayout(5, 1));

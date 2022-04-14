@@ -33,7 +33,6 @@ public class FindPasswd extends JFrame {
 
     public FindPasswd(String name) {
         setTitle("找回密码");
-        clientthread = new ClientThread(this);
 
         this.name = new JLabel(name);
         this.question = new JLabel("");

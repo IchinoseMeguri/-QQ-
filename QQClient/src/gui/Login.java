@@ -48,7 +48,6 @@ public class Login extends JFrame {
 
     public Login() {
         setTitle("登录");
-        clientthread = new ClientThread(this);
 
         name = new JTextField("", 15);
         passwd = new JPasswordField("", 15);
@@ -98,7 +97,9 @@ public class Login extends JFrame {
         });
         register.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                new Register().setVisible(true);
+                Register reg = new Register();
+                reg.setClientthread(new ClientThread(reg, ip.getText(), Integer.parseInt(port.getText())));
+                reg.setVisible(true);
             }
         });
         find.addActionListener(new ActionListener() {
@@ -107,6 +108,8 @@ public class Login extends JFrame {
 
             }
         });
+
+        clientthread = new ClientThread(this, ip.getText(), Integer.parseInt(port.getText()));
 
         // 窗口自适应
         pack();
@@ -133,6 +136,7 @@ public class Login extends JFrame {
         if (b == true) {
             Chat chat = new Chat(this.name.getText(), online);
             chat.setVisible(true);
+            chat.setClientthread(new ClientThread(chat, ip.getText(), Integer.parseInt(port.getText())));
             setVisible(false);
         } else {
             JOptionPane.showMessageDialog(null, "账号或密码错误");
@@ -147,6 +151,7 @@ public class Login extends JFrame {
     public void FindJudge(boolean b) {
         if (b == true) {
             FindPasswd find = new FindPasswd(name.getText());
+            find.setClientthread(new ClientThread(find, ip.getText(), Integer.parseInt(port.getText())));
             find.setVisible(true);
         } else {
             JOptionPane.showMessageDialog(null, "未查找到此用户");

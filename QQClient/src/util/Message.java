@@ -24,6 +24,18 @@ public class Message {
      */
     private String sender;// 发送方：自己
     private Object message;// 消息：可以是com.Message、com.FileMessage、数据库请求字符串、简单填充等
+    /**
+     * 规范（客户端->服务器）
+     * 11,12：用户账号
+     * 21,22：com.Message、com.FileMessage
+     * 31,32,33,34,35：数据库请求字符串
+     * 规范（服务器->客户端）
+     * 11,12：用户账号
+     * 21,22：com.Message、com.FileMessage
+     * 31：查询结果，当前在线用户列表
+     * 32,33,34：查询结果
+     * 35：查询结果，密码
+     */
     private LocalDateTime time;// 时间
     private String receiverip;// 接收方ip
     private int receiverport;// 接收方端口号

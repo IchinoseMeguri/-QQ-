@@ -5,21 +5,75 @@
  */
 package util;
 
-import java.net.Socket;
+import java.io.ByteArrayInputStream;
+import java.io.ObjectInputStream;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.time.LocalDateTime;
 
+import javax.swing.JFrame;
+
 public class ClientThread extends Thread {
-    private Socket socket;
+    private DatagramSocket socket;
+    private byte[] data = new byte[8096];
 
     private String username;
+    private JFrame frame;
 
-    public ClientThread() {
+    public ClientThread(JFrame frame) {
 
     }
 
     @Override
     public void run() {
-
+        while (true) {
+            try {
+                DatagramPacket packet = new DatagramPacket(data, data.length);
+                socket.receive(packet);
+                ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(data));
+                Message message = (Message) in.readObject();
+                switch (message.getType()) {
+                    /**
+                     * 消息类型
+                     * 11：用户登录
+                     * 12：用户退出
+                     * 21：发送消息
+                     * 22：发送文件
+                     * 31：登录认证（数据库请求）
+                     * 32：注册时重名查询（数据库请求）
+                     * 33：注册时添加账户（数据库请求）
+                     * 34：找回密码时查找账户（数据库请求）
+                     * 35：找回密码时验证密保问题（数据库请求）
+                     */
+                    case 11:
+                        ((gui.Chat) frame).NewLogin((String) message.getMessage());
+                        break;
+                    case 12:
+                        ((gui.Chat) frame).NewLogout((String) message.getMessage());
+                        break;
+                    case 21:
+                        ((gui.Chat) frame).ReceiveMessage((com.Message) message.getMessage());
+                        break;
+                    case 22:
+                        ((gui.Chat) frame).ReceiveFile((com.FileMessage) message.getMessage());
+                        break;
+                    case 31:// ((gui.Login)frame).LoginJudge(b, online);break;//TODO
+                    case 32:
+                        ((gui.Register) frame).NameJudge((boolean) message.getMessage());
+                        break;
+                    case 33:
+                        ((gui.Register) frame).RegisterOK((boolean) message.getMessage());
+                        break;
+                    case 34:
+                        ((gui.Login) frame).FindJudge((boolean) message.getMessage());
+                        break;
+                    case 35:
+                        // ((gui.FindPasswd)frame).Judge(b, passwd);break;//TODO
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void SendToServer(Object obj, int type) {
@@ -28,19 +82,19 @@ public class ClientThread extends Thread {
         message.setType(type);
         message.setTime(LocalDateTime.now());
         message.setMessage(obj);
-        message.setReceiverip(null);// TODO
-        message.setReceiverport(0);
+        // message.setReceiverip(null);// TODO
+        // message.setReceiverport(0);
     }
 
-    public void ReceiveFromServer() {
-
+    public void CloseClient() {
+        socket.close();
     }
 
-    public Socket getSocket() {
+    public DatagramSocket getSocket() {
         return socket;
     }
 
-    public void setSocket(Socket socket) {
+    public void setSocket(DatagramSocket socket) {
         this.socket = socket;
     }
 
@@ -50,6 +104,22 @@ public class ClientThread extends Thread {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public byte[] getData() {
+        return data;
+    }
+
+    public void setData(byte[] data) {
+        this.data = data;
+    }
+
+    public JFrame getFrame() {
+        return frame;
+    }
+
+    public void setFrame(JFrame frame) {
+        this.frame = frame;
     }
 
 }

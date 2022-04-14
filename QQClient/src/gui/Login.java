@@ -13,9 +13,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
+import util.ClientThread;
+
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
@@ -40,8 +44,11 @@ public class Login extends JFrame {
     private JPanel up;
     private JPanel down;
 
+    private ClientThread clientthread;
+
     public Login() {
         setTitle("登录");
+        clientthread = new ClientThread(this);
 
         name = new JTextField("", 15);
         passwd = new JPasswordField("", 15);
@@ -109,6 +116,14 @@ public class Login extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    public ClientThread getClientthread() {
+        return clientthread;
+    }
+
+    public void setClientthread(ClientThread clientthread) {
+        this.clientthread = clientthread;
+    }
+
     /**
      * @description: 客户端向服务器发出验证请求后，服务器向客户端返回一个结果，线程解析这条消息后调用此方法。
      * @param b
@@ -116,7 +131,8 @@ public class Login extends JFrame {
      */
     public void LoginJudge(boolean b, ArrayList<String> online) {
         if (b == true) {
-            new Chat(this.name.getText(), online).setVisible(true);
+            Chat chat = new Chat(this.name.getText(), online);
+            chat.setVisible(true);
             setVisible(false);
         } else {
             JOptionPane.showMessageDialog(null, "账号或密码错误");
@@ -130,10 +146,18 @@ public class Login extends JFrame {
      */
     public void FindJudge(boolean b) {
         if (b == true) {
-            new FindPasswd(name.getText());
+            FindPasswd find = new FindPasswd(name.getText());
+            find.setVisible(true);
         } else {
             JOptionPane.showMessageDialog(null, "未查找到此用户");
         }
     }
 
+    @Override
+    protected void processWindowEvent(WindowEvent e) {
+        if (e.getID() == WindowEvent.WINDOW_CLOSING) {
+            clientthread.CloseClient();
+            System.exit(0);
+        }
+    }
 }

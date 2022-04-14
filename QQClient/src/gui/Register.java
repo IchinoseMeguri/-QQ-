@@ -14,10 +14,13 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import util.ClientThread;
+
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
 
 public class Register extends JFrame {
     private JTextField name;
@@ -31,8 +34,11 @@ public class Register extends JFrame {
     private JPanel left;
     private JPanel right;
 
+    private ClientThread clientthread;
+
     public Register() {
         setTitle("注册");
+        clientthread = new ClientThread(this);
 
         left = new JPanel();
         left.setLayout(new GridLayout(5, 1));
@@ -77,6 +83,21 @@ public class Register extends JFrame {
         setResizable(false);
         // 窗口居中
         setLocationRelativeTo(null);
+    }
+
+    public ClientThread getClientthread() {
+        return clientthread;
+    }
+
+    public void setClientthread(ClientThread clientthread) {
+        this.clientthread = clientthread;
+    }
+
+    @Override
+    protected void processWindowEvent(WindowEvent e) {
+        if (e.getID() == WindowEvent.WINDOW_CLOSING) {
+            clientthread.CloseClient();
+        }
     }
 
     /**

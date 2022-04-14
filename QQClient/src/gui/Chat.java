@@ -22,6 +22,8 @@ import javax.swing.JTextArea;
 import com.FileMessage;
 import com.Message;
 
+import util.ClientThread;
+
 import java.awt.event.WindowEvent;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -54,9 +56,12 @@ public class Chat extends JFrame {
     private String name;
     private ArrayList<String> nowusers = new ArrayList<String>();
 
+    private ClientThread clientthread;
+
     public Chat(String name, ArrayList<String> online) {
         this.name = name;
         setTitle("聊天：" + this.name);
+        clientthread = new ClientThread(this);
 
         left = new JPanel();
         right = new JPanel();
@@ -119,6 +124,14 @@ public class Chat extends JFrame {
 
     }
 
+    public ClientThread getClientthread() {
+        return clientthread;
+    }
+
+    public void setClientthread(ClientThread clientthread) {
+        this.clientthread = clientthread;
+    }
+
     private void SendFile() {
         JFileChooser select = new JFileChooser(".");
         select.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -131,7 +144,7 @@ public class Chat extends JFrame {
             message.setSender(this.name);
             message.setTime(LocalDateTime.now());
             message.setType(this.sendto.getSelectedItem().toString() == "所有人" ? 0 : 1);
-            // TODO 向服务器发送消息
+            clientthread.SendToServer(message, 22);
             this.speak.setText("");
         }
     }
@@ -140,6 +153,7 @@ public class Chat extends JFrame {
     protected void processWindowEvent(WindowEvent e) {
         if (e.getID() == WindowEvent.WINDOW_CLOSING) {
             Logout();
+            clientthread.CloseClient();
             System.exit(0);
         }
     }
@@ -209,7 +223,7 @@ public class Chat extends JFrame {
      * @return
      */
     private void Logout() {
-        // TODO 告知服务器，服务器向其他客户端发送信号调用其他客户端的newlogout方法
+        clientthread.SendToServer(name, 12);
     }
 
     private void SendMessage() {
@@ -219,7 +233,7 @@ public class Chat extends JFrame {
         message.setSender(this.name);
         message.setTime(LocalDateTime.now());
         message.setType(this.sendto.getSelectedItem().toString() == "所有人" ? 0 : 1);
-        // TODO 向服务器发送消息
+        clientthread.SendToServer(message, 21);
         this.speak.setText("");
     }
 

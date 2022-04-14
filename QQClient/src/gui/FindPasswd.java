@@ -11,9 +11,13 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import util.ClientThread;
+
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
 
 public class FindPasswd extends JFrame {
     private JLabel name;
@@ -25,8 +29,11 @@ public class FindPasswd extends JFrame {
     private JPanel _question;
     private JPanel _answer;
 
+    private ClientThread clientthread;
+
     public FindPasswd(String name) {
         setTitle("找回密码");
+        clientthread = new ClientThread(this);
 
         this.name = new JLabel(name);
         this.question = new JLabel("");
@@ -62,6 +69,21 @@ public class FindPasswd extends JFrame {
         setResizable(false);
         // 窗口居中
         setLocationRelativeTo(null);
+    }
+
+    @Override
+    protected void processWindowEvent(WindowEvent e) {
+        if (e.getID() == WindowEvent.WINDOW_CLOSING) {
+            clientthread.CloseClient();
+        }
+    }
+
+    public ClientThread getClientthread() {
+        return clientthread;
+    }
+
+    public void setClientthread(ClientThread clientthread) {
+        this.clientthread = clientthread;
     }
 
     /**

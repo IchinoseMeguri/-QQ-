@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import util.ClientThread;
+import util.Message;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
@@ -57,10 +58,11 @@ public class FindPasswd extends JFrame {
 
         ok.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String sqlString = "select * from UserInfo where Userid='" + FindPasswd.this.name.getText()
-                        + "' and Answer='"
-                        + answer.getText() + "'";
-                clientthread.SendToServer(sqlString, 35);
+                Message message = new Message();
+                message.setType(35);
+                message.setUsername(name);
+                message.setAnswer(answer.getText());
+                clientthread.SendToServer(message);
             }
         });
 

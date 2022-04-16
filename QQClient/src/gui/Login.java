@@ -15,6 +15,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import util.ClientThread;
+import util.Message;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -91,9 +92,11 @@ public class Login extends JFrame {
 
         login.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String sqlString = "select * from UserInfo where Userid='" + name.getText() + "' and Userpsw='"
-                        + passwd + "'";
-                clientthread.SendToServer(sqlString, 31);
+                Message message = new Message();
+                message.setType(31);
+                message.setUsername(name.getText());
+                message.setPasswd(passwd.toString());
+                clientthread.SendToServer(message);
             }
         });
         register.addActionListener(new ActionListener() {
@@ -105,8 +108,10 @@ public class Login extends JFrame {
         });
         find.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String sqlString = "select * from UserInfo where Userid='" + name.getText() + "'";
-                clientthread.SendToServer(sqlString, 34);
+                Message message = new Message();
+                message.setType(34);
+                message.setUsername(name.getText());
+                clientthread.SendToServer(message);
             }
         });
 

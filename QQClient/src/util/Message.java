@@ -23,21 +23,17 @@ public class Message {
      * 34：找回密码时查找账户（数据库请求）
      * 35：找回密码时验证密保问题（数据库请求）
      */
-    private String sender;// 发送方：自己
-    private Object message;// 消息：可以是com.Message、com.FileMessage、数据库请求字符串、简单填充等
-    /**
-     * 规范（客户端->服务器）
-     * 11,12：用户账号
-     * 21,22：com.Message、com.FileMessage
-     * 31,32,33,34,35：数据库请求字符串
-     * 规范（服务器->客户端）
-     * 11,12：用户账号
-     * 21,22：com.Message、com.FileMessage
-     * 31：查询结果（boolean），当前在线用户列表
-     * 32,33,34：查询结果（boolean）
-     * 35：查询结果（boolean），密码
-     */
-    private ArrayList<String> others;// 其他信息，备注等，如服务器返回的在线用户列表、用户名、密码等
+    private String Username;// 用户账号
+    private String Passwd;// 密码
+    private String Question;// 密保问题
+    private String Answer;// 答案
+
+    private ArrayList<String> nowUsers;// 当前在线用户列表
+    private boolean result;// 数据库操作结果
+
+    private com.Message message;// 消息
+    private com.FileMessage filemessage;// 文件
+
     private LocalDateTime time;// 时间
     private String receiverip;// 接收方ip
     private int receiverport;// 接收方端口号
@@ -46,32 +42,8 @@ public class Message {
         return type;
     }
 
-    public ArrayList<String> getOthers() {
-        return others;
-    }
-
-    public void setOthers(ArrayList<String> others) {
-        this.others = others;
-    }
-
     public void setType(int type) {
         this.type = type;
-    }
-
-    public String getSender() {
-        return sender;
-    }
-
-    public void setSender(String sender) {
-        this.sender = sender;
-    }
-
-    public Object getMessage() {
-        return message;
-    }
-
-    public void setMessage(Object message) {
-        this.message = message;
     }
 
     public LocalDateTime getTime() {
@@ -96,6 +68,70 @@ public class Message {
 
     public void setReceiverport(int receiverport) {
         this.receiverport = receiverport;
+    }
+
+    public String getUsername() {
+        return Username;
+    }
+
+    public void setUsername(String username) {
+        Username = username;
+    }
+
+    public String getPasswd() {
+        return Passwd;
+    }
+
+    public void setPasswd(String passwd) {
+        Passwd = passwd;
+    }
+
+    public String getQuestion() {
+        return Question;
+    }
+
+    public void setQuestion(String question) {
+        Question = question;
+    }
+
+    public String getAnswer() {
+        return Answer;
+    }
+
+    public void setAnswer(String answer) {
+        Answer = answer;
+    }
+
+    public ArrayList<String> getNowUsers() {
+        return nowUsers;
+    }
+
+    public void setNowUsers(ArrayList<String> nowUsers) {
+        this.nowUsers = nowUsers;
+    }
+
+    public boolean isResult() {
+        return result;
+    }
+
+    public void setResult(boolean result) {
+        this.result = result;
+    }
+
+    public com.Message getMessage() {
+        return message;
+    }
+
+    public void setMessage(com.Message message) {
+        this.message = message;
+    }
+
+    public com.FileMessage getFile() {
+        return filemessage;
+    }
+
+    public void setFile(com.FileMessage file) {
+        this.filemessage = file;
     }
 
 }

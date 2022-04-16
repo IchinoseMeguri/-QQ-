@@ -53,33 +53,33 @@ public class ClientThread extends Thread {
                      * 35：找回密码时验证密保问题（数据库请求）
                      */
                     case 11:
-                        ((gui.Chat) frame).NewLogin((String) message.getMessage());
+                        ((gui.Chat) frame).NewLogin(message.getUsername());
                         break;
                     case 12:
-                        ((gui.Chat) frame).NewLogout((String) message.getMessage());
+                        ((gui.Chat) frame).NewLogout(message.getUsername());
                         break;
                     case 21:
-                        ((gui.Chat) frame).ReceiveMessage((com.Message) message.getMessage());
+                        ((gui.Chat) frame).ReceiveMessage(message.getMessage());
                         break;
                     case 22:
-                        ((gui.Chat) frame).ReceiveFile((com.FileMessage) message.getMessage());
+                        ((gui.Chat) frame).ReceiveFile(message.getFile());
                         break;
                     case 31:
-                        ((gui.Login) frame).LoginJudge((boolean) message.getMessage(),
-                                (ArrayList<String>) message.getOthers());
+                        ((gui.Login) frame).LoginJudge(message.isResult(),
+                                (ArrayList<String>) message.getNowUsers());
                         break;
                     case 32:
-                        ((gui.Register) frame).NameJudge((boolean) message.getMessage());
+                        ((gui.Register) frame).NameJudge(message.isResult());
                         break;
                     case 33:
-                        ((gui.Register) frame).RegisterOK((boolean) message.getMessage());
+                        ((gui.Register) frame).RegisterOK(message.isResult());
                         break;
                     case 34:
-                        ((gui.Login) frame).FindJudge((boolean) message.getMessage());
+                        ((gui.Login) frame).FindJudge(message.isResult());
                         break;
                     case 35:
-                        ((gui.FindPasswd) frame).Judge((boolean) message.getMessage(),
-                                (String) message.getOthers().get(0));
+                        ((gui.FindPasswd) frame).Judge(message.isResult(),
+                                (String) message.getPasswd());
                         break;
                 }
             } catch (Exception e) {
@@ -88,12 +88,8 @@ public class ClientThread extends Thread {
         }
     }
 
-    public void SendToServer(Object obj, int type) {
-        Message message = new Message();
-        message.setSender(username);
-        message.setType(type);
+    public void SendToServer(Message message) {
         message.setTime(LocalDateTime.now());
-        message.setMessage(obj);
         message.setReceiverip(socket.getInetAddress().getHostAddress());
         message.setReceiverport(socket.getPort());
         try {

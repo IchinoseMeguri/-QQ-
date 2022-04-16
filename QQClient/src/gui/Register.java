@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import util.ClientThread;
+import util.Message;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -70,8 +71,13 @@ public class Register extends JFrame {
 
         register.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String sqlString = "select * from UserInfo where Userid='" + name.getText() + "'";
-                clientthread.SendToServer(sqlString, 32);
+                Message message = new Message();
+                message.setType(32);
+                message.setUsername(name.getText());
+                message.setPasswd(psw.toString());
+                message.setQuestion(question.getText());
+                message.setAnswer(answer.getText());
+                clientthread.SendToServer(message);
             }
         });
 
@@ -111,9 +117,13 @@ public class Register extends JFrame {
             if (psw.toString() != psw2.toString()) {
                 JOptionPane.showMessageDialog(null, "密码与确认密码不一致");
             } else {
-                String sqlString = "insert into UserInfo values('" + name.getText() + "','" + psw + "','"
-                        + question.getText() + "','" + answer.getText() + "')";
-                clientthread.SendToServer(sqlString, 33);
+                Message message = new Message();
+                message.setType(33);
+                message.setUsername(name.getText());
+                message.setPasswd(psw.toString());
+                message.setQuestion(question.getText());
+                message.setAnswer(answer.getText());
+                clientthread.SendToServer(message);
             }
         }
     }

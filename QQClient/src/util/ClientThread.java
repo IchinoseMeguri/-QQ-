@@ -30,6 +30,7 @@ public class ClientThread extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        start();
     }
 
     @Override

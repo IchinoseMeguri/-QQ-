@@ -5,7 +5,7 @@
  * @Description: 
  */
 public class Main {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         gui.Login login = new gui.Login();
         login.setVisible(true);
     }

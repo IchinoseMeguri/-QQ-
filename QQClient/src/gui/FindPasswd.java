@@ -57,8 +57,10 @@ public class FindPasswd extends JFrame {
 
         ok.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // 向服务器通信，进行验证
-
+                String sqlString = "select * from UserInfo where Userid='" + FindPasswd.this.name.getText()
+                        + "' and Answer='"
+                        + answer.getText() + "'";
+                clientthread.SendToServer(sqlString, 35);
             }
         });
 

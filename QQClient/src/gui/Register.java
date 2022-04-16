@@ -70,9 +70,8 @@ public class Register extends JFrame {
 
         register.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // 向服务器通信，对数据库进行操作
-                // 重名判断
-
+                String sqlString = "select * from UserInfo where Userid='" + name.getText() + "'";
+                clientthread.SendToServer(sqlString, 32);
             }
         });
 
@@ -112,8 +111,9 @@ public class Register extends JFrame {
             if (psw.toString() != psw2.toString()) {
                 JOptionPane.showMessageDialog(null, "密码与确认密码不一致");
             } else {
-                // 写入数据库，向服务器通信
-
+                String sqlString = "insert into UserInfo values('" + name.getText() + "','" + psw + "','"
+                        + question.getText() + "','" + answer.getText() + "')";
+                clientthread.SendToServer(sqlString, 33);
             }
         }
     }

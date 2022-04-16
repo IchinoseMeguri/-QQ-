@@ -91,8 +91,9 @@ public class Login extends JFrame {
 
         login.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String n = name.getText();
-                // TODO 与服务器通信，进行用户验证，若通过，则登录，打开聊天窗口
+                String sqlString = "select * from UserInfo where Userid='" + name.getText() + "' and Userpsw='"
+                        + passwd + "'";
+                clientthread.SendToServer(sqlString, 31);
             }
         });
         register.addActionListener(new ActionListener() {
@@ -104,8 +105,8 @@ public class Login extends JFrame {
         });
         find.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // TODO 连接服务器，查找此用户，若查找到，打开一个findpsw窗口
-
+                String sqlString = "select * from UserInfo where Userid='" + name.getText() + "'";
+                clientthread.SendToServer(sqlString, 34);
             }
         });
 

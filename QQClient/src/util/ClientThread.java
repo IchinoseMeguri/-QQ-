@@ -5,33 +5,39 @@
  */
 package util;
 
-import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
 public class ClientThread extends Thread {
-    private DatagramSocket socket;
+    private Socket socket;
     private byte[] data = new byte[8096];
 
     private String username;
     private JFrame frame;
 
     public ClientThread(JFrame frame, String ip, int port) {
-
+        try {
+            socket = new Socket(ip, port);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void run() {
         while (true) {
             try {
-                DatagramPacket packet = new DatagramPacket(data, data.length);
-                socket.receive(packet);
-                ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(data));
-                Message message = (Message) in.readObject();
+                ObjectInputStream out = new ObjectInputStream(socket.getInputStream());
+                Message message = (Message) out.readObject();
                 switch (message.getType()) {
                     /**
                      * 消息类型
@@ -57,7 +63,10 @@ public class ClientThread extends Thread {
                     case 22:
                         ((gui.Chat) frame).ReceiveFile((com.FileMessage) message.getMessage());
                         break;
-                    case 31:// ((gui.Login)frame).LoginJudge(b, online);break;//TODO
+                    case 31:
+                        ((gui.Login) frame).LoginJudge((boolean) message.getMessage(),
+                                (ArrayList<String>) message.getOthers());
+                        break;
                     case 32:
                         ((gui.Register) frame).NameJudge((boolean) message.getMessage());
                         break;
@@ -68,7 +77,9 @@ public class ClientThread extends Thread {
                         ((gui.Login) frame).FindJudge((boolean) message.getMessage());
                         break;
                     case 35:
-                        // ((gui.FindPasswd)frame).Judge(b, passwd);break;//TODO
+                        ((gui.FindPasswd) frame).Judge((boolean) message.getMessage(),
+                                (String) message.getOthers().get(0));
+                        break;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -82,19 +93,29 @@ public class ClientThread extends Thread {
         message.setType(type);
         message.setTime(LocalDateTime.now());
         message.setMessage(obj);
-        message.setReceiverip(socket.getInetAddress().getHostAddress());// TODO
+        message.setReceiverip(socket.getInetAddress().getHostAddress());
         message.setReceiverport(socket.getPort());
+        try {
+            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+            out.writeObject(message);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void CloseClient() {
-        socket.close();
+        try {
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public DatagramSocket getSocket() {
+    public Socket getSocket() {
         return socket;
     }
 
-    public void setSocket(DatagramSocket socket) {
+    public void setSocket(Socket socket) {
         this.socket = socket;
     }
 

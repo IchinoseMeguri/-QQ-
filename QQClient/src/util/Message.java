@@ -6,6 +6,7 @@
 package util;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class Message {
     // 服务器端与客户端的通信信息数据结构应当保持一致
@@ -32,16 +33,25 @@ public class Message {
      * 规范（服务器->客户端）
      * 11,12：用户账号
      * 21,22：com.Message、com.FileMessage
-     * 31：查询结果，当前在线用户列表
-     * 32,33,34：查询结果
-     * 35：查询结果，密码
+     * 31：查询结果（boolean），当前在线用户列表
+     * 32,33,34：查询结果（boolean）
+     * 35：查询结果（boolean），密码
      */
+    private ArrayList<String> others;// 其他信息，备注等，如服务器返回的在线用户列表、用户名、密码等
     private LocalDateTime time;// 时间
     private String receiverip;// 接收方ip
     private int receiverport;// 接收方端口号
 
     public int getType() {
         return type;
+    }
+
+    public ArrayList<String> getOthers() {
+        return others;
+    }
+
+    public void setOthers(ArrayList<String> others) {
+        this.others = others;
     }
 
     public void setType(int type) {

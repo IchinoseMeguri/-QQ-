@@ -192,8 +192,10 @@ public class Login extends JFrame {
                 try {
                     settings.createNewFile();
                     String s = "{\n\t\"RememberPassword\":" + remember.isSelected() + ",\n\t\"Username\":\""
-                            + name.getText() + "\",\n\t\"Password\":\"" + String.valueOf(passwd.getPassword())
-                            + "\",\n\t\"AutoLogin\":" + autologin.isSelected() + ","
+                            + name.getText() + "\",\n\t\"Password\":\"";
+                    if (remember.isSelected())
+                        s += String.valueOf(passwd.getPassword());
+                    s += "\",\n\t\"AutoLogin\":" + autologin.isSelected() + ","
                             + "\n\t\"Ip\":\"" + ip.getText() + "\",\n\t\"Port\":" + port.getText() + "\n}";
                     Files.write(Paths.get(".\\Settings.json"), s.getBytes());
                 } catch (IOException e1) {

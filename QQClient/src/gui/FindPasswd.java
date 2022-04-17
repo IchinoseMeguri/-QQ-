@@ -65,7 +65,7 @@ public class FindPasswd extends JFrame {
                 Message message = new Message();
                 message.setType(31);
                 message.setUsername(name);
-                message.setPasswd(newpsw.toString());
+                message.setPasswd(String.valueOf(newpsw.getPassword()));
                 message.setPhone(phone.getText());
                 clientthread.SendToServer(message);
             }

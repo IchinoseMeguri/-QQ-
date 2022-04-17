@@ -73,7 +73,7 @@ public class Register extends JFrame {
                 Message message = new Message();
                 message.setType(1);
                 message.setUsername(name.getText());
-                message.setPasswd(psw.toString());
+                message.setPasswd(String.valueOf(psw.getPassword()));
                 message.setPhone(phone.getText());
                 clientthread.SendToServer(message);
 

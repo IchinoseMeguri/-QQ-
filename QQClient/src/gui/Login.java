@@ -138,7 +138,7 @@ public class Login extends JFrame {
                 Message message = new Message();
                 message.setType(11);
                 message.setUsername(name.getText());
-                message.setPasswd(passwd.toString());
+                message.setPasswd(String.valueOf(passwd.getPassword()));
                 clientthread.SendToServer(message);
             }
         });
@@ -192,7 +192,7 @@ public class Login extends JFrame {
                 try {
                     settings.createNewFile();
                     String s = "{\n\t\"RememberPassword\":" + remember.isSelected() + ",\n\t\"Username\":\""
-                            + name.getText() + "\",\n\t\"Password\":\"" + passwd.toString()
+                            + name.getText() + "\",\n\t\"Password\":\"" + String.valueOf(passwd.getPassword())
                             + "\",\n\t\"AutoLogin\":" + autologin.isSelected() + ","
                             + "\n\t\"Ip\":\"" + ip.getText() + "\",\n\t\"Port\":" + port.getText() + "\n}";
                     Files.write(Paths.get(".\\Settings.json"), s.getBytes());

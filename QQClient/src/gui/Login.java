@@ -157,7 +157,8 @@ public class Login extends JFrame {
             }
         });
 
-        clientthread = new ClientThread(this, ip.getText(), Integer.parseInt(port.getText()));
+        clientthread = new ClientThread(ip.getText(), Integer.parseInt(port.getText()));
+        clientthread.setLoginframe(this);
 
         if (AutoLogin)
             login.doClick();

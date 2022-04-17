@@ -61,6 +61,7 @@ public class Chat extends JFrame {
     public Chat(String name, ArrayList<String> online) {
         this.name = name;
         setTitle("聊天：" + this.name);
+        clientthread.setChatframe(this);
 
         left = new JPanel();
         right = new JPanel();

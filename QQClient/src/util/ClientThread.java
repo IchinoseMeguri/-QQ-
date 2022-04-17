@@ -13,16 +13,17 @@ import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-import javax.swing.JFrame;
-
 public class ClientThread extends Thread {
     private Socket socket;
     private byte[] data = new byte[8096];
 
     private String username;
-    private JFrame frame;
+    private gui.Login loginframe;
+    private gui.Chat chatframe;
+    private gui.Register registerframe;
+    private gui.FindPasswd findframe;
 
-    public ClientThread(JFrame frame, String ip, int port) {
+    public ClientThread(String ip, int port) {
         try {
             socket = new Socket(ip, port);
             while (!socket.isConnected())
@@ -55,27 +56,27 @@ public class ClientThread extends Thread {
                      * 35：找回密码时验证密保问题（数据库请求）
                      */
                     case 14:
-                        ((gui.Chat) frame).NewLogin(message.getUsername());
+                        chatframe.NewLogin(message.getUsername());
                         break;
                     case 15:
-                        ((gui.Chat) frame).NewLogout(message.getUsername());
+                        chatframe.NewLogout(message.getUsername());
                         break;
                     case 41:
-                        ((gui.Chat) frame).ReceiveMessage(message.getMessage());
+                        chatframe.ReceiveMessage(message.getMessage());
                         break;
                     case 42:
-                        ((gui.Chat) frame).ReceiveFile(message.getFile());
+                        chatframe.ReceiveFile(message.getFile());
                         break;
                     case 12:
-                        ((gui.Login) frame).LoginJudge(message.isResult(),
+                        loginframe.LoginJudge(message.isResult(),
                                 (ArrayList<String>) message.getNowUsers());
                         break;
 
                     case 2:
-                        ((gui.Register) frame).RegisterOK(message.isResult());
+                        registerframe.RegisterOK(message.isResult());
                         break;
                     case 32:
-                        ((gui.FindPasswd) frame).Judge(message.isResult(),
+                        findframe.Judge(message.isResult(),
                                 (String) message.getPasswd());
                         break;
                 }
@@ -129,12 +130,36 @@ public class ClientThread extends Thread {
         this.data = data;
     }
 
-    public JFrame getFrame() {
-        return frame;
+    public gui.Login getLoginframe() {
+        return loginframe;
     }
 
-    public void setFrame(JFrame frame) {
-        this.frame = frame;
+    public void setLoginframe(gui.Login loginframe) {
+        this.loginframe = loginframe;
+    }
+
+    public gui.Chat getChatframe() {
+        return chatframe;
+    }
+
+    public void setChatframe(gui.Chat chatframe) {
+        this.chatframe = chatframe;
+    }
+
+    public gui.Register getRegisterframe() {
+        return registerframe;
+    }
+
+    public void setRegisterframe(gui.Register registerframe) {
+        this.registerframe = registerframe;
+    }
+
+    public gui.FindPasswd getFindframe() {
+        return findframe;
+    }
+
+    public void setFindframe(gui.FindPasswd findframe) {
+        this.findframe = findframe;
     }
 
 }

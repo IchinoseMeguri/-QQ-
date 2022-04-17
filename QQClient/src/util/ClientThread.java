@@ -25,12 +25,14 @@ public class ClientThread extends Thread {
     public ClientThread(JFrame frame, String ip, int port) {
         try {
             socket = new Socket(ip, port);
+            while (!socket.isConnected())
+                ;
+            start();
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        start();
     }
 
     @Override

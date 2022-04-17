@@ -76,7 +76,6 @@ public class ClientThread extends Thread {
                     case 33:
                         ((gui.Register) frame).RegisterOK(message.isResult());
                         break;
-                    case 34:
                     case 35:
                         ((gui.FindPasswd) frame).Judge(message.isResult(),
                                 (String) message.getPasswd());

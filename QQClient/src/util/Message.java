@@ -25,8 +25,7 @@ public class Message {
      */
     private String Username;// 用户账号
     private String Passwd;// 密码
-    private String Question;// 密保问题
-    private String Answer;// 答案
+    private String Phone;// 手机号
 
     private ArrayList<String> nowUsers;// 当前在线用户列表
     private boolean result;// 数据库操作结果
@@ -86,20 +85,12 @@ public class Message {
         Passwd = passwd;
     }
 
-    public String getQuestion() {
-        return Question;
-    }
-
-    public void setQuestion(String question) {
-        Question = question;
-    }
-
     public String getAnswer() {
-        return Answer;
+        return Phone;
     }
 
     public void setAnswer(String answer) {
-        Answer = answer;
+        Phone = answer;
     }
 
     public ArrayList<String> getNowUsers() {

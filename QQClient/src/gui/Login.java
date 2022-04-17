@@ -145,16 +145,15 @@ public class Login extends JFrame {
         register.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Register reg = new Register();
-                reg.setClientthread(new ClientThread(reg, ip.getText(), Integer.parseInt(port.getText())));
+                reg.setClientthread(clientthread);
                 reg.setVisible(true);
             }
         });
         find.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Message message = new Message();
-                message.setType(34);
-                message.setUsername(name.getText());
-                clientthread.SendToServer(message);
+                FindPasswd find = new FindPasswd(name.getText());
+                find.setClientthread(clientthread);
+                find.setVisible(true);
             }
         });
 
@@ -189,7 +188,7 @@ public class Login extends JFrame {
         if (b == true) {
             Chat chat = new Chat(this.name.getText(), online);
             chat.setVisible(true);
-            chat.setClientthread(new ClientThread(chat, ip.getText(), Integer.parseInt(port.getText())));
+            chat.setClientthread(this.clientthread);
             File settings = new File(".\\Settings.json");
             if (!settings.exists()) {
                 try {
@@ -206,21 +205,6 @@ public class Login extends JFrame {
             setVisible(false);
         } else {
             JOptionPane.showMessageDialog(null, "账号或密码错误");
-        }
-    }
-
-    /**
-     * @description: 客户端向服务器发出验证请求后，服务器向客户端返回一个结果，线程解析这条消息后调用此方法。
-     * @param b
-     * @return
-     */
-    public void FindJudge(boolean b) {
-        if (b == true) {
-            FindPasswd find = new FindPasswd(name.getText());
-            find.setClientthread(new ClientThread(find, ip.getText(), Integer.parseInt(port.getText())));
-            find.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(null, "未查找到此用户");
         }
     }
 

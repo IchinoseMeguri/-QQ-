@@ -27,8 +27,7 @@ public class Register extends JFrame {
     private JTextField name;
     private JPasswordField psw;
     private JPasswordField psw2;
-    private JTextField question;
-    private JTextField answer;
+    private JTextField phone;
 
     private JButton register;
 
@@ -41,9 +40,9 @@ public class Register extends JFrame {
         setTitle("注册");
 
         left = new JPanel();
-        left.setLayout(new GridLayout(5, 1));
+        left.setLayout(new GridLayout(4, 1));
         right = new JPanel();
-        right.setLayout(new GridLayout(5, 1));
+        right.setLayout(new GridLayout(4, 1));
         register = new JButton("注册");
 
         name = new JTextField("", 15);
@@ -51,19 +50,16 @@ public class Register extends JFrame {
         psw.setEchoChar('*');
         psw2 = new JPasswordField("", 15);
         psw2.setEchoChar('*');
-        question = new JTextField("", 15);
-        answer = new JTextField("", 15);
+        phone = new JTextField("", 15);
 
         left.add(new JLabel("账号", SwingConstants.RIGHT));
         left.add(new JLabel("密码", SwingConstants.RIGHT));
         left.add(new JLabel("确认密码", SwingConstants.RIGHT));
-        left.add(new JLabel("密保问题（用于找回，请牢记）", SwingConstants.RIGHT));
-        left.add(new JLabel("密保问题答案", SwingConstants.RIGHT));
+        left.add(new JLabel("手机号", SwingConstants.RIGHT));
         right.add(name);
         right.add(psw);
         right.add(psw2);
-        right.add(question);
-        right.add(answer);
+        right.add(phone);
 
         add(left, BorderLayout.WEST);
         add(right, BorderLayout.EAST);
@@ -75,8 +71,7 @@ public class Register extends JFrame {
                 message.setType(32);
                 message.setUsername(name.getText());
                 message.setPasswd(psw.toString());
-                message.setQuestion(question.getText());
-                message.setAnswer(answer.getText());
+                message.setAnswer(phone.getText());
                 clientthread.SendToServer(message);
             }
         });
@@ -121,8 +116,7 @@ public class Register extends JFrame {
                 message.setType(33);
                 message.setUsername(name.getText());
                 message.setPasswd(psw.toString());
-                message.setQuestion(question.getText());
-                message.setAnswer(answer.getText());
+                message.setAnswer(phone.getText());
                 clientthread.SendToServer(message);
             }
         }

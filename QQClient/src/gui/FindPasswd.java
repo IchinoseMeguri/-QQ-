@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import util.ClientThread;
@@ -21,9 +22,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 
 public class FindPasswd extends JFrame {
-    private JLabel name;
-    private JLabel question;
-    private JTextField answer;
+    private JTextField name;
+    private JPasswordField newpsw;
+    private JTextField phone;
     private JButton ok;
 
     private JPanel _name;
@@ -35,9 +36,10 @@ public class FindPasswd extends JFrame {
     public FindPasswd(String name) {
         setTitle("找回密码");
 
-        this.name = new JLabel(name);
-        this.question = new JLabel("");
-        this.answer = new JTextField("", 20);
+        this.name = new JTextField(name);
+        this.newpsw = new JPasswordField("", 20);
+        newpsw.setEchoChar('*');
+        this.phone = new JTextField("", 20);
         this.ok = new JButton("找回密码");
 
         setLayout(new GridLayout(4, 1));
@@ -45,11 +47,11 @@ public class FindPasswd extends JFrame {
         _name.add(new JLabel("账号："));
         _name.add(this.name);
         _question = new JPanel();
-        _question.add(new JLabel("请回答密保问题："));
-        _question.add(question);
+        _question.add(new JLabel("请输入新密码："));
+        _question.add(newpsw);
         _answer = new JPanel();
-        _answer.add(new JLabel("答案"));
-        _answer.add(answer);
+        _answer.add(new JLabel("请输入手机号"));
+        _answer.add(phone);
         ok = new JButton("确认");
         add(_name);
         add(_question);
@@ -61,7 +63,8 @@ public class FindPasswd extends JFrame {
                 Message message = new Message();
                 message.setType(35);
                 message.setUsername(name);
-                message.setAnswer(answer.getText());
+                message.setPasswd(newpsw.toString());
+                message.setAnswer(phone.getText());
                 clientthread.SendToServer(message);
             }
         });
@@ -97,7 +100,7 @@ public class FindPasswd extends JFrame {
      */
     public void Judge(boolean b, String passwd) {
         if (b == true) {
-            JOptionPane.showMessageDialog(null, "请牢记找回的密码：" + passwd);
+            JOptionPane.showMessageDialog(null, "请牢记新的密码");
         } else {
             JOptionPane.showMessageDialog(null, "验证信息错误");
         }

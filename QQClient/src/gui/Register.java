@@ -67,12 +67,16 @@ public class Register extends JFrame {
 
         register.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Message message = new Message();
-                message.setType(32);
-                message.setUsername(name.getText());
-                message.setPasswd(psw.toString());
-                message.setAnswer(phone.getText());
-                clientthread.SendToServer(message);
+                if (psw.toString() != psw2.toString()) {
+                    JOptionPane.showMessageDialog(null, "密码与确认密码不一致");
+                } else {
+                    Message message = new Message();
+                    message.setType(1);
+                    message.setUsername(name.getText());
+                    message.setPasswd(psw.toString());
+                    message.setPhone(phone.getText());
+                    clientthread.SendToServer(message);
+                }
             }
         });
 
@@ -96,29 +100,6 @@ public class Register extends JFrame {
     protected void processWindowEvent(WindowEvent e) {
         if (e.getID() == WindowEvent.WINDOW_CLOSING) {
             clientthread.CloseClient();
-        }
-    }
-
-    /**
-     * @description: 客户端向服务器发出验证请求后，服务器向客户端返回一个结果，线程解析这条消息后调用此方法。
-     * @param b
-     * @return
-     */
-    public void NameJudge(boolean b) {
-        if (b == true) {
-            JOptionPane.showMessageDialog(null, "该账号不可用");
-        } else {
-            // 判断密码与确认密码是否一致
-            if (psw.toString() != psw2.toString()) {
-                JOptionPane.showMessageDialog(null, "密码与确认密码不一致");
-            } else {
-                Message message = new Message();
-                message.setType(33);
-                message.setUsername(name.getText());
-                message.setPasswd(psw.toString());
-                message.setAnswer(phone.getText());
-                clientthread.SendToServer(message);
-            }
         }
     }
 

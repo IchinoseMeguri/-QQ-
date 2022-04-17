@@ -61,10 +61,10 @@ public class FindPasswd extends JFrame {
         ok.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Message message = new Message();
-                message.setType(35);
+                message.setType(31);
                 message.setUsername(name);
                 message.setPasswd(newpsw.toString());
-                message.setAnswer(phone.getText());
+                message.setPhone(phone.getText());
                 clientthread.SendToServer(message);
             }
         });

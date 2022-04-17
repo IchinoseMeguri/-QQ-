@@ -136,7 +136,7 @@ public class Login extends JFrame {
         login.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Message message = new Message();
-                message.setType(31);
+                message.setType(11);
                 message.setUsername(name.getText());
                 message.setPasswd(passwd.toString());
                 clientthread.SendToServer(message);

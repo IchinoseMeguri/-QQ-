@@ -54,29 +54,27 @@ public class ClientThread extends Thread {
                      * 34：找回密码时查找账户（数据库请求）
                      * 35：找回密码时验证密保问题（数据库请求）
                      */
-                    case 11:
+                    case 14:
                         ((gui.Chat) frame).NewLogin(message.getUsername());
                         break;
-                    case 12:
+                    case 15:
                         ((gui.Chat) frame).NewLogout(message.getUsername());
                         break;
-                    case 21:
+                    case 41:
                         ((gui.Chat) frame).ReceiveMessage(message.getMessage());
                         break;
-                    case 22:
+                    case 42:
                         ((gui.Chat) frame).ReceiveFile(message.getFile());
                         break;
-                    case 31:
+                    case 12:
                         ((gui.Login) frame).LoginJudge(message.isResult(),
                                 (ArrayList<String>) message.getNowUsers());
                         break;
-                    case 32:
-                        ((gui.Register) frame).NameJudge(message.isResult());
-                        break;
-                    case 33:
+
+                    case 2:
                         ((gui.Register) frame).RegisterOK(message.isResult());
                         break;
-                    case 35:
+                    case 32:
                         ((gui.FindPasswd) frame).Judge(message.isResult(),
                                 (String) message.getPasswd());
                         break;

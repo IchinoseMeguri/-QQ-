@@ -144,7 +144,7 @@ public class Chat extends JFrame {
             message.setTime(LocalDateTime.now());
             message.setType(this.sendto.getSelectedItem().toString() == "所有人" ? 0 : 1);
             util.Message mes = new util.Message();
-            mes.setType(22);
+            mes.setType(42);
             mes.setUsername(name);
             mes.setFile(message);
             clientthread.SendToServer(mes);
@@ -227,7 +227,7 @@ public class Chat extends JFrame {
      */
     private void Logout() {
         util.Message message = new util.Message();
-        message.setType(12);
+        message.setType(13);
         message.setUsername(name);
         clientthread.SendToServer(message);
     }
@@ -240,7 +240,7 @@ public class Chat extends JFrame {
         message.setTime(LocalDateTime.now());
         message.setType(this.sendto.getSelectedItem().toString() == "所有人" ? 0 : 1);
         util.Message mes = new util.Message();
-        mes.setType(21);
+        mes.setType(41);
         mes.setUsername(name);
         mes.setMessage(message);
         clientthread.SendToServer(mes);

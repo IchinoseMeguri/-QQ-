@@ -33,9 +33,10 @@ public class FindPasswd extends JFrame {
 
     private ClientThread clientthread;
 
-    public FindPasswd(String name) {
+    public FindPasswd(ClientThread clientthread, String name) {
         setTitle("找回密码");
-        clientthread.setFindframe(this);
+        this.clientthread = clientthread;
+        this.clientthread.setFindframe(this);
 
         this.name = new JTextField(name);
         this.newpsw = new JPasswordField("", 20);

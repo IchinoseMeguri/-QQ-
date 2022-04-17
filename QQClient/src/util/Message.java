@@ -5,10 +5,11 @@
  */
 package util;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class Message {
+public class Message implements Serializable {
     // 服务器端与客户端的通信信息数据结构应当保持一致
     public int type;
     /**

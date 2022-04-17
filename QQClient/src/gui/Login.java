@@ -144,15 +144,13 @@ public class Login extends JFrame {
         });
         register.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Register reg = new Register();
-                reg.setClientthread(clientthread);
+                Register reg = new Register(clientthread);
                 reg.setVisible(true);
             }
         });
         find.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                FindPasswd find = new FindPasswd(name.getText());
-                find.setClientthread(clientthread);
+                FindPasswd find = new FindPasswd(clientthread, name.getText());
                 find.setVisible(true);
             }
         });
@@ -187,9 +185,8 @@ public class Login extends JFrame {
      */
     public void LoginJudge(boolean b, ArrayList<String> online) {
         if (b == true) {
-            Chat chat = new Chat(this.name.getText(), online);
+            Chat chat = new Chat(this.clientthread, this.name.getText(), online);
             chat.setVisible(true);
-            chat.setClientthread(this.clientthread);
             File settings = new File(".\\Settings.json");
             if (!settings.exists()) {
                 try {

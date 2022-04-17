@@ -36,9 +36,10 @@ public class Register extends JFrame {
 
     private ClientThread clientthread;
 
-    public Register() {
+    public Register(ClientThread clientthread) {
         setTitle("注册");
-        clientthread.setRegisterframe(this);
+        this.clientthread = clientthread;
+        this.clientthread.setRegisterframe(this);
 
         left = new JPanel();
         left.setLayout(new GridLayout(4, 1));
@@ -68,16 +69,14 @@ public class Register extends JFrame {
 
         register.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (psw.getPassword() != psw2.getPassword()) {
-                    JOptionPane.showMessageDialog(null, "密码与确认密码不一致");
-                } else {
-                    Message message = new Message();
-                    message.setType(1);
-                    message.setUsername(name.getText());
-                    message.setPasswd(psw.toString());
-                    message.setPhone(phone.getText());
-                    clientthread.SendToServer(message);
-                }
+
+                Message message = new Message();
+                message.setType(1);
+                message.setUsername(name.getText());
+                message.setPasswd(psw.toString());
+                message.setPhone(phone.getText());
+                clientthread.SendToServer(message);
+
             }
         });
 

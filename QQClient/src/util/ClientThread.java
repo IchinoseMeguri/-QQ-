@@ -45,15 +45,14 @@ public class ClientThread extends Thread {
                 switch (message.getType()) {
                     /**
                      * 消息类型
-                     * 11：用户登录
-                     * 12：用户退出
-                     * 21：发送消息
-                     * 22：发送文件
-                     * 31：登录认证（数据库请求）
-                     * 32：注册时重名查询（数据库请求）
-                     * 33：注册时添加账户（数据库请求）
-                     * 34：找回密码时查找账户（数据库请求）
-                     * 35：找回密码时验证密保问题（数据库请求）
+                     * 01,02：注册
+                     * 11,12：登录
+                     * 13：退出
+                     * 31,32：找回密码
+                     * 41：文字消息
+                     * 42：文件消息
+                     * 14：有人登陆
+                     * 15：有人退出
                      */
                     case 14:
                         chatframe.NewLogin(message.getUsername());
@@ -71,7 +70,6 @@ public class ClientThread extends Thread {
                         loginframe.LoginJudge(message.isResult(),
                                 (ArrayList<String>) message.getNowUsers());
                         break;
-
                     case 2:
                         registerframe.RegisterOK(message.isResult());
                         break;

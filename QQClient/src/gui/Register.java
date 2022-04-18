@@ -96,13 +96,6 @@ public class Register extends JFrame {
         this.clientthread = clientthread;
     }
 
-    @Override
-    protected void processWindowEvent(WindowEvent e) {
-        if (e.getID() == WindowEvent.WINDOW_CLOSING) {
-            clientthread.CloseClient();
-        }
-    }
-
     /**
      * @description: 客户端向服务器发出验证请求后，服务器向客户端返回一个结果，线程解析这条消息后调用此方法。
      * @param b

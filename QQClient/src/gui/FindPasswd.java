@@ -79,13 +79,6 @@ public class FindPasswd extends JFrame {
         setLocationRelativeTo(null);
     }
 
-    @Override
-    protected void processWindowEvent(WindowEvent e) {
-        if (e.getID() == WindowEvent.WINDOW_CLOSING) {
-            clientthread.CloseClient();
-        }
-    }
-
     public ClientThread getClientthread() {
         return clientthread;
     }

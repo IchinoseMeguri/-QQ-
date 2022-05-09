@@ -93,6 +93,7 @@ public class ClientThread extends Thread {
         message.setReceiverport(socket.getPort());
         try {
             out.writeObject(message);
+            out.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }

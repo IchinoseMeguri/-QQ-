@@ -98,11 +98,50 @@ public class Server {
 				e.printStackTrace();
 			}
 		}
-		// println(message.message.sender + "(to all):\n" + message.message.message);
+		println(message.message.sender + "(to all):\n" + message.message.message);
 	}
 
 	public void relay(Message message) {
-		// String to = message.message.receiver;
+		String to = message.message.receiver;
+		// String to = message.getFile().getReceiver();
+		User toUser = null;
+		// 通过用户名搜索用户
+		for (int i = 0; i < users.size(); i++) { // 遍历整个用户列表
+			// 向其他在线用户发送新登录者用户名
+			if (users.get(i).userName.equals(to)) {
+				toUser = users.get(i);
+			}
+		}
+
+		// 用户不在线
+		if (toUser == null)
+			return;
+
+		// 输出信息
+		try {
+			toUser.out.writeObject(message);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		println(message.message.sender + "(to" + message.message.getReceiver() + "):\n" + message.message.message);
+	}
+
+	public void FilesendToAll(Message message) {
+		for (int i = 0; i < users.size(); i++) { // 遍历整个用户列表
+			// 向其他在线用户发送
+			try {
+				users.get(i).out.writeObject(message);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		if (message.filemessage.isStartOfFile())
+			println(message.filemessage.getSender() + "(to all):\n" + message.filemessage.getFilename());
+	}
+
+	public void Filerelay(Message message) {
 		String to = message.getFile().getReceiver();
 		User toUser = null;
 		// 通过用户名搜索用户
@@ -124,9 +163,10 @@ public class Server {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// println(message.message.sender + "(to all):\n" + message.message.message);
+		if (message.getFile().isStartOfFile())
+			println(message.filemessage.getSender() + "(to" + message.filemessage.getReceiver() + "):\n"
+					+ message.filemessage.getFilename());
 	}
-
 	/*
 	 * public void sendToAll(String message) {
 	 * println("--------------------------");

@@ -206,31 +206,30 @@ public class ConnecterThread implements Runnable {
 	private void login() throws IOException {
 		// TODO Auto-generated method stub
 		message.setType(12);
-		// int n = SqlHelper.Login(message.getUsername(),message.getPasswd());
-		// if (n <= 0) {// 登录失败
-		// message.setResult(false);
-		// out.writeObject(message);
-		// }
-		// else { // 登录成功
-		message.setResult(true);
-		// nowserver.users
-		message.setNowUsers(server.getNowUsers());
-		out.writeObject(message);
+		int n = SqlHelper.Login(message.getUsername(), message.getPasswd());
+		if (n <= 0) {// 登录失败
+			message.setResult(false);
+			out.writeObject(message);
+		} else { // 登录成功
+			message.setResult(true);
+			// nowserver.users
+			message.setNowUsers(server.getNowUsers());
+			out.writeObject(message);
 
-		Message newUserName = new Message();
-		newUserName.setUsername(message.Username);
-		newUserName.setType(14);
-		// 向所有其他在线用户发送新登录者用户名
-		for (int i = 0; i < server.users.size(); i++) { // 遍历整个用户列表
-			// 向其他在线用户发送新登录者用户名
-			server.users.get(i).out.writeObject(newUserName);
+			Message newUserName = new Message();
+			newUserName.setUsername(message.Username);
+			newUserName.setType(14);
+			// 向所有其他在线用户发送新登录者用户名
+			for (int i = 0; i < server.users.size(); i++) { // 遍历整个用户列表
+				// 向其他在线用户发送新登录者用户名
+				server.users.get(i).out.writeObject(newUserName);
+			}
+
+			// init user to server
+			createUserToServer(message.getUsername());
+			server.println(message.getUsername() + "已登录");
+
 		}
-
-		// init user to server
-		createUserToServer(message.getUsername());
-		server.println(message.getUsername() + "已登录");
-
-		// }
 	}
 
 	private void findPasswd() {

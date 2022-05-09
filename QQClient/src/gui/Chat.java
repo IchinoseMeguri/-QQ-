@@ -169,38 +169,52 @@ public class Chat extends JFrame {
                     + Boolean.toString(mes.getFile().isStartOfFile()));
             clientthread.SendToServer(mes);
             this.speak.setText("");
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e1) {
-                e1.printStackTrace();
-            }
+            String str = message.getType() == 0 ? "[广播]" : "[私聊]";
+            str += "[" + message.getTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "]";
+            str += "我对 " + this.sendto.getSelectedItem().toString() + " 发送了文件:\n";
+            str += "        " + message.getFilename() + "\n";
+            this.message.append(str);
+            this.message.setCaretPosition(this.message.getDocument().getLength());
             FileInputStream fis;
             try {
                 fis = new FileInputStream(file);
                 byte[] bys = new byte[8096];
                 while (fis.read(bys, 0, bys.length) != -1) {
-                    message.setStr(bys);
-                    message.setStartOfFile(false);
-                    message.setEndOfFile(false);
-                    mes.setFile(message);
-                    System.out.println(mes.getFile().getStr() + Boolean.toString(mes.getFile().isEndOfFile())
-                            + Boolean.toString(mes.getFile().isStartOfFile()));
-                    clientthread.SendToServer(mes);
+                    FileMessage message2 = new FileMessage();
+                    message2.setFilename(file.getName());
+                    message2.setReceiver(this.sendto.getSelectedItem().toString());
+                    message2.setSender(this.name);
+                    message2.setTime(LocalDateTime.now());
+                    message2.setType(this.sendto.getSelectedItem().toString() == "所有人" ? 0 : 1);
+                    message2.setStr(bys);
+                    message2.setStartOfFile(false);
+                    message2.setEndOfFile(false);
+                    util.Message mes2 = new util.Message();
+                    mes2.setType(42);
+                    mes2.setUsername(name);
+                    mes2.setFile(message2);
+                    System.out.println(mes2.getFile().getStr() + Boolean.toString(mes2.getFile().isEndOfFile())
+                            + Boolean.toString(mes2.getFile().isStartOfFile()));
+                    clientthread.SendToServer(mes2);
                     this.speak.setText("");
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e1) {
-                        e1.printStackTrace();
-                    }
                 }
                 fis.close();
-                message.setStr(null);
-                message.setStartOfFile(false);
-                message.setEndOfFile(true);
-                mes.setFile(message);
-                System.out.println(mes.getFile().getStr() + Boolean.toString(mes.getFile().isEndOfFile())
-                        + Boolean.toString(mes.getFile().isStartOfFile()));
-                clientthread.SendToServer(mes);
+                FileMessage message3 = new FileMessage();
+                message3.setFilename(file.getName());
+                message3.setReceiver(this.sendto.getSelectedItem().toString());
+                message3.setSender(this.name);
+                message3.setTime(LocalDateTime.now());
+                message3.setType(this.sendto.getSelectedItem().toString() == "所有人" ? 0 : 1);
+                message3.setStr(null);
+                message3.setStartOfFile(false);
+                message3.setEndOfFile(true);
+                util.Message mes3 = new util.Message();
+                mes3.setType(42);
+                mes3.setUsername(name);
+                mes3.setFile(message3);
+                System.out.println(mes3.getFile().getStr() + Boolean.toString(mes3.getFile().isEndOfFile())
+                        + Boolean.toString(mes3.getFile().isStartOfFile()));
+                clientthread.SendToServer(mes3);
                 this.speak.setText("");
             } catch (IOException e) {
                 e.printStackTrace();
@@ -236,8 +250,8 @@ public class Chat extends JFrame {
 
     public void ReceiveFile(FileMessage file) {
         try {
-            System.out.println(file.getStr() + Boolean.toString(file.isEndOfFile())
-                    + Boolean.toString(file.isStartOfFile()));
+            // System.out.println(file.getStr() + Boolean.toString(file.isEndOfFile())
+            // + Boolean.toString(file.isStartOfFile()));
             if (file.isStartOfFile() == true) {
                 String str = file.getType() == 0 ? "[广播]" : "[私聊]";
                 str += "[" + file.getTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "]";
@@ -261,7 +275,7 @@ public class Chat extends JFrame {
 
             else if (file.isStartOfFile() == false && file.isEndOfFile() == false) {
                 FileWriter writer = new FileWriter(SavePath, true);
-                writer.write(file.getStr().toString());
+                writer.write(new String(file.getStr()));
                 writer.close();
             }
 

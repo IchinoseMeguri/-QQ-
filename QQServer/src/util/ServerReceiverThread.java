@@ -97,11 +97,13 @@ public class ServerReceiverThread implements Runnable {
 	}
 
 	private boolean receiveFileMessage() {
+		System.out.println(message.filemessage.getStr() + Boolean.toString(message.filemessage.isEndOfFile())
+				+ Boolean.toString(message.filemessage.isStartOfFile()));
 		if (message.filemessage.getType() == 0) { // 广播
-			server.sendToAll(message);
+			server.FilesendToAll(message);
 			// server.println(message.message.sender+"(to all):\n"+message.message.message);
 		} else {
-			server.relay(message);
+			server.Filerelay(message);
 			// server.println(message.message.sender+"(to
 			// "+message.message.receiver+"):\n"+message.message.message);
 		}

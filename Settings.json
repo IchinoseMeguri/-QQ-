@@ -1,8 +1,8 @@
 {
 	"RememberPassword":true,
-	"Username":"123",
+	"Username":"Íô¼ÎÀÚ",
 	"Password":"",
-	"AutoLogin":true,
+	"AutoLogin":false,
 	"Ip":"127.0.0.1",
 	"Port":50000
 }

@@ -247,6 +247,15 @@ public class Chat extends JFrame {
         mes.setMessage(message);
         clientthread.SendToServer(mes);
         this.speak.setText("");
+
+        if (message.getType() == 1) {
+            String str = message.getType() == 0 ? "[广播]" : "[私聊]";
+            str += "[" + message.getTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "]";
+            str += "我对 " + this.sendto.getSelectedItem().toString() + " 说:\n";
+            str += "        " + message.getMessage() + "\n";
+            this.message.append(str);
+            this.message.setCaretPosition(this.message.getDocument().getLength());
+        }
     }
 
     /**

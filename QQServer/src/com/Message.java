@@ -3,13 +3,14 @@ package com;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Message {
+public class Message implements Serializable {
+    private static final long serialVersionUID = 1L;
     public String message;
     public LocalDateTime time;
     public String sender;
     public int type;// 0：广播，1：私聊
     public String receiver;
-    
+
     public String getMessage() {
         return message;
     }

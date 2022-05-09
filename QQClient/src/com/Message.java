@@ -5,9 +5,11 @@
  */
 package com;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Message {
+public class Message implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String message;
     private LocalDateTime time;
     private String sender;

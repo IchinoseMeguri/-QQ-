@@ -15,6 +15,8 @@ import java.util.ArrayList;
 
 public class ClientThread extends Thread {
     private Socket socket;
+    private ObjectOutputStream out;
+    private ObjectInputStream in;
     private byte[] data = new byte[8096];
 
     private String username;
@@ -26,6 +28,8 @@ public class ClientThread extends Thread {
     public ClientThread(String ip, int port) {
         try {
             socket = new Socket(ip, port);
+            in = new ObjectInputStream(socket.getInputStream());
+            out = new ObjectOutputStream(socket.getOutputStream());
             while (!socket.isConnected())
                 ;
             start();
@@ -40,8 +44,7 @@ public class ClientThread extends Thread {
     public void run() {
         while (true) {
             try {
-                ObjectInputStream out = new ObjectInputStream(socket.getInputStream());
-                Message message = (Message) out.readObject();
+                Message message = (Message) in.readObject();
                 switch (message.getType()) {
                     /**
                      * 消息类型
@@ -89,7 +92,6 @@ public class ClientThread extends Thread {
         message.setReceiverip(socket.getInetAddress().getHostAddress());
         message.setReceiverport(socket.getPort());
         try {
-            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
             out.writeObject(message);
         } catch (IOException e) {
             e.printStackTrace();

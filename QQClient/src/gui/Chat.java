@@ -264,7 +264,7 @@ public class Chat extends JFrame {
         sendto.addItem("所有人");
         this.users.setText("");
         for (String string : nowusers) {
-            this.users.append(string);
+            this.users.append(string + "\n");
             sendto.addItem(string);
         }
     }

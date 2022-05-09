@@ -10,7 +10,7 @@ public class SqlHelper {
 	public static Connection getConnection() {
 		Connection connection = null;
 		String driverName = "com.microsoft.sqlserver.jdbc.SQLServerDriver";// SQL数据库引擎
-		String dbURL = "jdbc:sqlserver://localhost:1433;DatabaseName=QQTable;encrypt=true;trustServerCertificate=true;";
+		String dbURL = "jdbc:sqlserver://localhost:1433;DatabaseName=qq;encrypt=true;trustServerCertificate=true;";
 		String Name = "sa";
 		String Pwd = "123";
 		try {

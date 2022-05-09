@@ -37,6 +37,9 @@ public class ServerReceiverThread implements Runnable {
 				case 41:
 					receiveTextMessage();
 					break;
+				case 42:
+					receiveFileMessage();
+					break;
 				case 13:
 					logout();
 					break;
@@ -91,6 +94,19 @@ public class ServerReceiverThread implements Runnable {
 			 */
 
 		}
+	}
+
+	private boolean receiveFileMessage() {
+		if (message.filemessage.getType() == 0) { // 广播
+			server.sendToAll(message);
+			// server.println(message.message.sender+"(to all):\n"+message.message.message);
+		} else {
+			server.relay(message);
+			// server.println(message.message.sender+"(to
+			// "+message.message.receiver+"):\n"+message.message.message);
+		}
+
+		return true;
 	}
 
 	public boolean receiveTextMessage() {

@@ -15,6 +15,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -30,7 +31,9 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -57,6 +60,8 @@ public class Chat extends JFrame {
     private ArrayList<String> nowusers = new ArrayList<String>();
 
     private ClientThread clientthread;
+
+    private File SavePath;
 
     public Chat(ClientThread clientthread, String name, ArrayList<String> online) {
         this.name = name;
@@ -125,6 +130,14 @@ public class Chat extends JFrame {
 
     }
 
+    public File getSavePath() {
+        return SavePath;
+    }
+
+    public void setSavePath(File savePath) {
+        this.SavePath = savePath;
+    }
+
     public ClientThread getClientthread() {
         return clientthread;
     }
@@ -140,17 +153,59 @@ public class Chat extends JFrame {
         if (select.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             File file = new File(select.getSelectedFile().getPath());
             FileMessage message = new FileMessage();
-            message.setFile(file);
+            message.setFilename(file.getName());
             message.setReceiver(this.sendto.getSelectedItem().toString());
             message.setSender(this.name);
             message.setTime(LocalDateTime.now());
             message.setType(this.sendto.getSelectedItem().toString() == "所有人" ? 0 : 1);
+            message.setStr(null);
+            message.setStartOfFile(true);
+            message.setEndOfFile(false);
             util.Message mes = new util.Message();
             mes.setType(42);
             mes.setUsername(name);
             mes.setFile(message);
+            System.out.println(mes.getFile().getStr() + Boolean.toString(mes.getFile().isEndOfFile())
+                    + Boolean.toString(mes.getFile().isStartOfFile()));
             clientthread.SendToServer(mes);
             this.speak.setText("");
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e1) {
+                e1.printStackTrace();
+            }
+            FileInputStream fis;
+            try {
+                fis = new FileInputStream(file);
+                byte[] bys = new byte[8096];
+                while (fis.read(bys, 0, bys.length) != -1) {
+                    message.setStr(bys);
+                    message.setStartOfFile(false);
+                    message.setEndOfFile(false);
+                    mes.setFile(message);
+                    System.out.println(mes.getFile().getStr() + Boolean.toString(mes.getFile().isEndOfFile())
+                            + Boolean.toString(mes.getFile().isStartOfFile()));
+                    clientthread.SendToServer(mes);
+                    this.speak.setText("");
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+                fis.close();
+                message.setStr(null);
+                message.setStartOfFile(false);
+                message.setEndOfFile(true);
+                mes.setFile(message);
+                System.out.println(mes.getFile().getStr() + Boolean.toString(mes.getFile().isEndOfFile())
+                        + Boolean.toString(mes.getFile().isStartOfFile()));
+                clientthread.SendToServer(mes);
+                this.speak.setText("");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 
@@ -180,36 +235,43 @@ public class Chat extends JFrame {
     }
 
     public void ReceiveFile(FileMessage file) {
-        String str = file.getType() == 0 ? "[广播]" : "[私聊]";
-        str += "[" + file.getTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "]";
-        str += file.getSender() + "发送了一份文件。" + "\n";
-        this.message.append(str);
-        this.message.setCaretPosition(this.message.getDocument().getLength());
-        JFileChooser save = new JFileChooser(".");
-        save.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        save.setMultiSelectionEnabled(false);
-        if (save.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-            String path = save.getSelectedFile().getPath();
-            try {
-                BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file.getFile()));
-                if (!path.endsWith("\\")) {
-                    path += "\\";
+        try {
+            System.out.println(file.getStr() + Boolean.toString(file.isEndOfFile())
+                    + Boolean.toString(file.isStartOfFile()));
+            if (file.isStartOfFile() == true) {
+                String str = file.getType() == 0 ? "[广播]" : "[私聊]";
+                str += "[" + file.getTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "]";
+                str += file.getSender() + "发送了一份文件。" + "\n";
+                this.message.append(str);
+                this.message.setCaretPosition(this.message.getDocument().getLength());
+                this.SavePath = new File("./FileReceive/" + file.getFilename());
+                File folder = new File("./FileReceive");
+                if (!folder.exists() && !folder.isDirectory())
+                    folder.mkdirs();
+                if (!SavePath.exists())
+                    SavePath.createNewFile();
+                else {
+                    String path = SavePath.getPath();
+                    String newpath = path + "(-2)";
+                    this.SavePath = new File(newpath);
+                    SavePath.createNewFile();
+
                 }
-                BufferedOutputStream bos = new BufferedOutputStream(
-                        new FileOutputStream(path + file.getFile().getName()));
-                byte[] buf = new byte[4096];
-                int length = bis.read(buf);
-                // 保存文件
-                while (length != -1) {
-                    bos.write(buf, 0, length);
-                    length = bis.read(buf);
-                }
-                bos.close();
-                bis.close();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
+
+            else if (file.isStartOfFile() == false && file.isEndOfFile() == false) {
+                FileWriter writer = new FileWriter(SavePath, true);
+                writer.write(file.getStr().toString());
+                writer.close();
+            }
+
+            else if (file.isEndOfFile() == true) {
+                JOptionPane.showMessageDialog(null, "文件传输完成");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
     }
 
     /**

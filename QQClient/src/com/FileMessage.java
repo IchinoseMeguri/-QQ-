@@ -5,22 +5,50 @@
  */
 package com;
 
-import java.io.File;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class FileMessage {
-    private File file;
+public class FileMessage implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private String Filename;
+    private byte str[] = new byte[8096];
+    private boolean EndOfFile;
+    private boolean StartOfFile;
     private LocalDateTime time;
     private String sender;
     private int type;// 0：广播，1：私聊
     private String receiver;
 
-    public File getFile() {
-        return file;
+    public String getFilename() {
+        return Filename;
     }
 
-    public void setFile(File file) {
-        this.file = file;
+    public boolean isStartOfFile() {
+        return StartOfFile;
+    }
+
+    public void setStartOfFile(boolean startOfFile) {
+        this.StartOfFile = startOfFile;
+    }
+
+    public void setFilename(String filename) {
+        Filename = filename;
+    }
+
+    public byte[] getStr() {
+        return str;
+    }
+
+    public void setStr(byte[] str) {
+        this.str = str;
+    }
+
+    public boolean isEndOfFile() {
+        return EndOfFile;
+    }
+
+    public void setEndOfFile(boolean endOfFile) {
+        EndOfFile = endOfFile;
     }
 
     public LocalDateTime getTime() {
@@ -54,4 +82,5 @@ public class FileMessage {
     public void setReceiver(String receiver) {
         this.receiver = receiver;
     }
+
 }
